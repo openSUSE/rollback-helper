@@ -1,0 +1,19 @@
+[Unit]
+Description=Rollback Helper for Registration
+#Documentation=man:systemd-firstboot(1)
+DefaultDependencies=no
+Requires=network-online.target
+After=network-online.target
+After=systemd-remount-fs.service systemd-tmpfiles-setup.service syslog.target network.target
+ConditionPathExists=/var/lib/rollback/check-registration
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/rollback-reset-registration
+StandardOutput=tty
+#StandardInput=tty
+#StandardError=tty
+
+[Install]
+WantedBy=multi-user.target

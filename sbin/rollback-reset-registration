@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# This script is called on first boot after a snapper rollback
+# The purpose of this script is to verify that after a rollback
+# the correct products are registered at SCC/SMT.
+
+VARDIR="/var/lib/rollback"
+
+CURRENT_SNAPSHOT_ID=`grep subvol=/@/.snapshots/ /proc/mounts | grep "/ btrfs" | sed -e 's|.*.snapshots/\(.*\)/snapshot.*|\1|g'`
+DEFAULT_SNAPSHOT_ID=`btrfs subvolume get-default / | sed -e 's|.*.snapshots/\(.*\)/snapshot|\1|g'`
+
+# Make sure to trigger re-registration only when the system is running the
+# production snapshot (i.e. don't trigger when the user selected some old
+# snapshot from GRUB - or at least not until he made it the default one)
+if [ "${CURRENT_SNAPSHOT_ID}" -ne "${DEFAULT_SNAPSHOT_ID}" ]; then
+  exit
+fi
+
+if SUSEConnect --status | grep -q '"Registered"'; then
+  if SUSEConnect --rollback; then
+    rm -f ${VARDIR}/check-registration
+  fi
+fi 
