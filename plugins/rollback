@@ -14,8 +14,3 @@ NEW=$2
 
 test -d $NEW/$VARDIR || mkdir -p $NEW/$VARDIR/
 touch $NEW/$VARDIR/check-registration
-rm -rf $NEW/$VARDIR/repos.d
-rm -rf $NEW/$VARDIR/services.d
-cp -a $OLD/etc/zypp/repos.d $NEW/$VARDIR/
-cp -a $OLD/etc/zypp/services.d $NEW/$VARDIR/
-
