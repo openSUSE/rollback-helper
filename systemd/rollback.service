@@ -2,7 +2,7 @@
 Description=Rollback Helper for Registration
 DefaultDependencies=no
 Requires=network-online.target
-After=local-fs.target networki-online.target
+After=local-fs.target network-online.target
 ConditionPathExists=/var/lib/rollback/check-registration
 
 [Service]
