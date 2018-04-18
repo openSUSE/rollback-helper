@@ -9,9 +9,6 @@ ConditionPathExists=/var/lib/rollback/check-registration
 Type=oneshot
 RemainAfterExit=yes
 ExecStart=/usr/sbin/rollback-reset-registration
-StandardOutput=tty
-#StandardInput=tty
-#StandardError=tty
 
 [Install]
 WantedBy=multi-user.target
