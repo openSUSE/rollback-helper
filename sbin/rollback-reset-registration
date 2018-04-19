@@ -6,6 +6,11 @@
 
 VARDIR="/var/lib/rollback"
 
+if [ ! -f /etc/zypp/credentials.d/SCCcredentials ]; then
+# We don't need to check anything if the system was not registered
+  exit 0
+fi
+
 CURRENT_SNAPSHOT_ID=`grep subvol=/@/.snapshots/ /proc/mounts | grep "/ btrfs" | sed -e 's|.*.snapshots/\(.*\)/snapshot.*|\1|g'`
 DEFAULT_SNAPSHOT_ID=`btrfs subvolume get-default / | sed -e 's|.*.snapshots/\(.*\)/snapshot|\1|g'`
 
