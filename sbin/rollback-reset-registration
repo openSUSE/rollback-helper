@@ -21,6 +21,13 @@ if [ "${CURRENT_SNAPSHOT_ID}" -ne "${DEFAULT_SNAPSHOT_ID}" ]; then
   exit
 fi
 
-if SUSEConnect --rollback; then
-  rm -f ${VARDIR}/check-registration
-fi
+# systemd does currently not support "Restart=" for oneshot services
+# (https://github.com/systemd/systemd/issues/2582), so implement a manual
+# retry algorithm
+for i in {1..5}; do
+  [ $i == 1 ] || sleep 2
+  if SUSEConnect --rollback; then
+    rm -f ${VARDIR}/check-registration
+    exit 0
+  fi
+done
