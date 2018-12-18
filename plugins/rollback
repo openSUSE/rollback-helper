@@ -12,5 +12,11 @@ VARDIR=/var/lib/rollback
 OLD=$1
 NEW=$2
 
-test -d $NEW/$VARDIR || mkdir -p $NEW/$VARDIR/
-touch $NEW/$VARDIR/check-registration
+# Write flag file into VARDIR; if this directory is part of the root file
+# system (e.g. when using an old subvolume layout) then write to the *new*
+# snapshot directory, otherwise the file won't be visible to the new snapshot.
+if [ "$(findmnt --noheadings --output TARGET --target "${VARDIR}")" = "/" ]; then
+  VARDIR="${NEW}/${VARDIR}"
+fi
+test -d "${VARDIR}" || mkdir -p "${VARDIR}/"
+touch "${VARDIR}/check-registration"
