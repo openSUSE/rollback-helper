@@ -31,3 +31,5 @@ for i in {1..5}; do
     exit 0
   fi
 done
+
+exit 1
