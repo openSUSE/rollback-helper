@@ -18,7 +18,7 @@ DEFAULT_SNAPSHOT_ID=`btrfs subvolume get-default / | sed -e 's|.*.snapshots/\(.*
 # production snapshot (i.e. don't trigger when the user selected some old
 # snapshot from GRUB - or at least not until he made it the default one)
 if [ "${CURRENT_SNAPSHOT_ID}" -ne "${DEFAULT_SNAPSHOT_ID}" ]; then
-  exit
+  exit 0
 fi
 
 # systemd does currently not support "Restart=" for oneshot services
@@ -31,3 +31,5 @@ for i in {1..5}; do
     exit 0
   fi
 done
+# If SUSEConnect never succeeds, quit with an error [bsc#1220680]
+exit 1
