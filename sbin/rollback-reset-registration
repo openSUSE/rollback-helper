@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script is called on first boot after a snapper rollback
 # The purpose of this script is to verify that after a rollback
